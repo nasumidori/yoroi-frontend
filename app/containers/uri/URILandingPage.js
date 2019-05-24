@@ -34,9 +34,15 @@ export default class URILandingPage extends Component<Props> {
     this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.ADD });
   };
 
+  onConfirm = () => {
+    // inject parameters in state?
+    this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.SEND });
+  }
+
   render() {
     return (
       <URILandingDialogContainer
+        onConfirm={this.onConfirm}
         onClose={this.onClose}
         address={address}
         amount={amount}

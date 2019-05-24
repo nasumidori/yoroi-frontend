@@ -31,12 +31,8 @@ type State = {
 @observer
 export default class URILandingDialog extends Component<Props, State> {
 
-  submit = () => {
-    this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.SEND });
-  };
-
   render() {
-    const { onCancel } = this.props;
+    const { onCancel, onSubmit } = this.props;
 
     return (
       <Dialog
@@ -45,7 +41,7 @@ export default class URILandingDialog extends Component<Props, State> {
         closeButton={<DialogCloseButton />}
         classicTheme={true}
         onClose={this.props.onClose}
-        backButton={<DialogBackButton />}
+        backButton={<DialogBackButton onBack={onCancel} />}
       >
         <div>
           <div>
@@ -55,7 +51,7 @@ export default class URILandingDialog extends Component<Props, State> {
             </p>
             <Button
               label="Sounds good, take me to my wallet"
-              onMouseUp={this.submit}
+              onMouseUp={onSubmit}
               disabled={false}
               skin={ButtonSkin}
             />

@@ -17,7 +17,7 @@ type Props = InjectedDialogContainerProps;
 export default class URILandingDialogContainer extends Component<Props> {
 
   state = {
-    verifyTxData: undefined,
+    verifyTxData: false,
   };
 
   onSubmit = () => {
@@ -27,7 +27,17 @@ export default class URILandingDialogContainer extends Component<Props> {
   };
 
   onVerifiedSubmit = () => {
-    this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.SEND });
+    this.props.onConfirm();
+  };
+
+  onCancel = () => {
+    this.props.onClose();
+  }
+
+  cancelVerification = () => {
+    this.setState({
+      verifyTxData: false,
+    });
   };
 
   render() {
@@ -37,8 +47,9 @@ export default class URILandingDialogContainer extends Component<Props> {
     if (verifyTxData) {
       return (
         <URIVerifyDialog
-          onSubmit={this.onSubmit}
+          onSubmit={this.onVerifiedSubmit}
           onClose={this.props.onClose}
+          onCancel={this.cancelVerification}
           address={this.props.address}
           amount={this.props.amount}
         />
@@ -49,6 +60,7 @@ export default class URILandingDialogContainer extends Component<Props> {
       <URILandingDialog
         onSubmit={this.onSubmit}
         onClose={this.props.onClose}
+        onCancel={this.onCancel}
         address={this.props.address}
         amount={this.props.amount}
       />
