@@ -8,6 +8,7 @@ import { defineMessages, intlShape } from 'react-intl';
 
 import Dialog from '../widgets/Dialog';
 import DialogCloseButton from '../widgets/DialogCloseButton';
+import DialogBackButton from '../widgets/DialogBackButton';
 import LocalizableError from '../../i18n/LocalizableError';
 
 const messages = defineMessages({
@@ -20,7 +21,6 @@ const messages = defineMessages({
 type Props = {
   onSubmit: Function,
   onCancel: Function,
-  onCancel: Function,
   error?: ?LocalizableError,
 };
 
@@ -31,38 +31,30 @@ type State = {
 @observer
 export default class URILandingDialog extends Component<Props, State> {
 
-  static defaultProps = {
-    error: undefined,
-    onBack: undefined,
-  }
-
   submit = () => {
-    this.props.onSubmit();
+    this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.SEND });
   };
 
   render() {
-    const { onCancel, onBack } = this.props;
+    const { onCancel } = this.props;
 
     return (
       <Dialog
-        title="Please read the following information"
+        title="Confirm transaction parameters"
         closeOnOverlayClick={false}
         closeButton={<DialogCloseButton />}
         classicTheme={true}
         onClose={this.props.onClose}
+        backButton={<DialogBackButton />}
       >
         <div>
           <div>
-            <p>
-              You are about to perform a transaction from a URI link.
-              Before redirecting you to your wallet, please be aware that
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.
-
-              So please make sure that duis aute irure dolor in reprehenderit in
-              voluptate velit esse cillum dolor.
+            <p>Please confirm the amount and recipient address<br />
+            Address: {this.props.address} <br />
+            Amount: {this.props.amount} <br />
             </p>
             <Button
-              label={"I understand"}
+              label="Sounds good, take me to my wallet"
               onMouseUp={this.submit}
               disabled={false}
               skin={ButtonSkin}

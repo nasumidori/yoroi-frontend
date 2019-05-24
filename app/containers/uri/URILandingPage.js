@@ -30,7 +30,8 @@ if (!addMatch && !amountMatch) {
 export default class URILandingPage extends Component<Props> {
 
   onClose = () => {
-    // this.props.actions.dialogs.closeActiveDialog.trigger();
+    this.props.actions.dialogs.closeActiveDialog.trigger();
+    this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.ADD });
   };
 
   render() {
