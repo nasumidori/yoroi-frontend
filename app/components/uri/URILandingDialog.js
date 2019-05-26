@@ -11,9 +11,17 @@ import DialogCloseButton from '../widgets/DialogCloseButton';
 import LocalizableError from '../../i18n/LocalizableError';
 
 const messages = defineMessages({
-  titleLabel: {
-    id: 'wallet.send.from.uri.label',
-    defaultMessage: '!!!Title',
+  uriLandingDialogTitle: {
+    id: 'uri.landing.dialog.title',
+    defaultMessage: '!!!Please read the following information',
+  },
+  uriLandingDialogWarningText: {
+    id: 'uri.landing.dialog.warning.text',
+    defaultMessage: "!!!You are about to perform a transaction from a URI link. Before continuing, please make sure you are on Yoroi's official app, and that you are not being victim of a phishing or man-in-the-middle attack.",
+  },
+  uriLandingDialogConfirmLabel: {
+    id: 'uri.landing.dialog.confirm.label',
+    defaultMessage: "!!!I understand",
   },
 });
 
@@ -36,6 +44,10 @@ export default class URILandingDialog extends Component<Props, State> {
     onBack: undefined,
   }
 
+  static contextTypes = {
+    intl: intlShape.isRequired,
+  };
+
   submit = () => {
     this.props.onSubmit();
   };
@@ -45,29 +57,20 @@ export default class URILandingDialog extends Component<Props, State> {
 
     return (
       <Dialog
-        title="Please read the following information"
+        title={this.context.intl.formatMessage(messages.uriLandingDialogTitle)}
         closeOnOverlayClick={false}
         closeButton={<DialogCloseButton />}
         classicTheme={true}
         onClose={this.props.onClose}
       >
         <div>
-          <div>
-            <p>
-              You are about to perform a transaction from a URI link.
-              Before redirecting you to your wallet, please be aware that
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do.
-
-              So please make sure that duis aute irure dolor in reprehenderit in
-              voluptate velit esse cillum dolor.
-            </p>
+            <p>{this.context.intl.formatMessage(messages.uriLandingDialogWarningText)}</p>
             <Button
-              label={"I understand"}
+              label={this.context.intl.formatMessage(messages.uriLandingDialogConfirmLabel)}
               onMouseUp={this.submit}
               disabled={false}
               skin={ButtonSkin}
             />
-          </div>
         </div>
       </Dialog>
     );
