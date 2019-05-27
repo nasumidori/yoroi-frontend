@@ -4,6 +4,8 @@ import Store from '../base/Store';
 import Wallet from '../../domain/Wallet';
 import environment from '../../environment';
 import { ROUTES } from '../../routes-config';
+import { matchRoute } from '../../utils/routing';
+import { getURIParameters } from '../../utils/URIParser';
 import LocalizableError, {
   localizedError
 } from '../../i18n/LocalizableError';
@@ -20,6 +22,10 @@ export default class LoadingStore extends Store {
 
   @observable error: ?LocalizableError = null;
   @observable _loading: boolean = true;
+  @observable _uriParams: Object = {};
+
+  _originRoute: string = null;
+  _originRouteIsURI: boolean = false;
 
   @observable loadRustRequest: Request<void => Promise<void>>
     = new Request<void => Promise<void>>(RustModule.load.bind(RustModule));
@@ -63,11 +69,22 @@ export default class LoadingStore extends Store {
     return !!this._loading;
   }
 
+  @computed get uriParams(): Object {
+    return this._uriParams;
+  }
+
   _isRefresh = (): boolean => this.isLoading;
 
-  _redirectToLoading = (): void => (
-    this.actions.router.goToRoute.trigger({ route: ROUTES.ROOT })
-  );
+  _redirectToLoading = (): void => {
+    // before redirecting, save origin route in case we need to come back to
+    // it later (this is the case when user comes from a URI link)
+    this._originRoute = this.stores.app.currentRoute;
+    this._originRouteIsURI = matchRoute(ROUTES.SEND_FROM_URI.ROOT, this._originRoute);
+    if (this._originRouteIsURI) {
+      this._uriParams = getURIParameters(decodeURIComponent(window.location.href));
+    }
+    this.actions.router.goToRoute.trigger({ route: ROUTES.ROOT });
+  }
 
   /** Select which page to open after app is done loading */
   _openPageAfterLoad = async (): Promise<void> => {
@@ -81,10 +98,14 @@ export default class LoadingStore extends Store {
         // Dynamic Initialization of Topbar Categories
         this.stores.topbar.initCategories();
 
-        this.actions.router.goToRoute.trigger({
-          route: ROUTES.WALLETS.TRANSACTIONS,
-          params: { id: firstWallet.id }
-        });
+        if (this._originRouteIsURI) {
+          this.actions.router.goToRoute.trigger({ route: ROUTES.SEND_FROM_URI.ROOT });
+        } else {
+          this.actions.router.goToRoute.trigger({
+            route: ROUTES.WALLETS.TRANSACTIONS,
+            params: { id: firstWallet.id }
+          });
+        }
       } else {
         this.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.ADD });
       }
