@@ -2,29 +2,12 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { ROUTES } from '../../routes-config';
+import environment from '../../environment';
 import { getUrlParameterByName } from '../../utils/routing';
 import type { InjectedProps } from '../../types/injectedPropsType';
 import URILandingDialogContainer from './URILandingDialogContainer'
 
 type Props = InjectedProps;
-
-// just for testing purposes. this logic doesn't belong here
-const url = decodeURIComponent(window.location.href);
-console.log(url);
-const addRegex = new RegExp('cardano:([A-Za-z0-9]+)\?');
-const addMatch = addRegex.exec(url);
-const amountRegex = new RegExp('amount=([0-9]+\.?[0-9]*)');
-const amountMatch = amountRegex.exec(url);
-let address = '';
-let amount = '';
-if (!addMatch && !amountMatch) {
-  console.error("can't retrieve parameters!");
-} else {
-  address = addMatch[1];
-  amount = amountMatch[1];
-  console.log(address);
-  console.log(amount);
-}
 
 @observer
 export default class URILandingPage extends Component<Props> {
@@ -35,17 +18,23 @@ export default class URILandingPage extends Component<Props> {
   };
 
   onConfirm = () => {
-    // inject parameters in state?
-    this.props.actions.router.goToRoute.trigger({ route: ROUTES.WALLETS.SEND });
+    const { wallets } = this.props.stores.substores[environment.API];
+    let params = {};
+    if (wallets.hasAnyWallets) params = { id: wallets.first.id };
+    this.props.actions.router.goToRoute.trigger({
+      route: ROUTES.WALLETS.SEND,
+      params: params
+    });
   }
 
   render() {
+
     return (
       <URILandingDialogContainer
         onConfirm={this.onConfirm}
         onClose={this.onClose}
-        address={address}
-        amount={amount}
+        address={this.props.stores.loading.uriParams.address}
+        amount={this.props.stores.loading.uriParams.amount}
       />
     );
   }

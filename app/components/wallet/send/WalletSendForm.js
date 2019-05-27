@@ -99,6 +99,8 @@ type Props = {
   webWalletConfirmationDialogRenderCallback: Function,
   hardwareWalletConfirmationDialogRenderCallback: Function,
   classicTheme: boolean,
+  amountDefault: number,
+  receiverDefault: string,
 };
 
 type State = {
@@ -238,6 +240,7 @@ export default class WalletSendForm extends Component<Props, State> {
               {...receiverField.bind()}
               error={receiverField.error}
               skin={classicTheme ? InputSkin : InputOwnSkin}
+              value={this.props.amountDefault}
             />
           </div>
 
@@ -255,6 +258,7 @@ export default class WalletSendForm extends Component<Props, State> {
               total={totalAmount.toFormat(currencyMaxFractionalDigits)}
               skin={AmountInputSkin}
               classicTheme={classicTheme}
+              value={this.props.receiverDefault}
             />
           </div>
 

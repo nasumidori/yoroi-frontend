@@ -88,6 +88,8 @@ export default class WalletSendPage extends Component<Props> {
         hasAnyPending={hasAnyPending}
         isHardwareWallet={activeWallet.isHardwareWallet}
         classicTheme={profile.isClassicTheme}
+        amountDefault={this.props.stores.loading.uriParams.address}
+        receiverDefault={this.props.stores.loading.uriParams.amount}
       />
     );
   }

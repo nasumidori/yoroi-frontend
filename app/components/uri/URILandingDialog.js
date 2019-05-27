@@ -32,10 +32,6 @@ type Props = {
   error?: ?LocalizableError,
 };
 
-type State = {
-  warningConfirmed: boolean,
-};
-
 @observer
 export default class URILandingDialog extends Component<Props, State> {
 
