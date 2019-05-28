@@ -22,9 +22,14 @@ import type { ActionsMap } from './actions';
 import ThemeManager from './ThemeManager';
 import environment from './environment';
 import { hot } from 'react-hot-loader';
+import registerProtocols from './uri-protocols';
 
 // https://github.com/yahoo/react-intl/wiki#loading-locale-data
 addLocaleData([...en, ...ko, ...ja, ...zh, ...ru, ...de, ...fr, ...id, ...es]);
+
+// TODO: this should't be placed here (because here it runs every time the
+// app is rendered). Protocol registration must be ran only during inital setup
+registerProtocols();
 
 @observer
 class App extends Component<{
