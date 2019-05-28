@@ -27,17 +27,19 @@ const messages = defineMessages({
 
 type Props = {
   onSubmit: Function,
-  onCancel: Function,
-  onCancel: Function,
+  onClose: Function,
   error?: ?LocalizableError,
+  classicTheme: boolean,
 };
 
 @observer
-export default class URILandingDialog extends Component<Props, State> {
+export default class URILandingDialog extends Component<Props> {
 
   static defaultProps = {
+    onSubmit: undefined,
+    onClose: undefined,
     error: undefined,
-    onBack: undefined,
+    classicTheme: true
   }
 
   static contextTypes = {
@@ -49,18 +51,20 @@ export default class URILandingDialog extends Component<Props, State> {
   };
 
   render() {
-    const { onCancel, onBack } = this.props;
+    const { onClose, classicTheme } = this.props;
 
     return (
       <Dialog
         title={this.context.intl.formatMessage(messages.uriLandingDialogTitle)}
         closeOnOverlayClick={false}
         closeButton={<DialogCloseButton />}
-        classicTheme={true}
-        onClose={this.props.onClose}
+        classicTheme={classicTheme}
+        onClose={onClose}
       >
         <div>
-            <p>{this.context.intl.formatMessage(messages.uriLandingDialogWarningText)}</p>
+            <p>
+              {this.context.intl.formatMessage(messages.uriLandingDialogWarningText)}
+            </p>
             <Button
               label={this.context.intl.formatMessage(messages.uriLandingDialogConfirmLabel)}
               onMouseUp={this.submit}

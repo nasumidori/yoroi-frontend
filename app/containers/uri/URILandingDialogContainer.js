@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 
-import type { InjectedDialogContainerProps } from '../../../types/injectedPropsType';
+import type { InjectedDialogContainerProps } from '../../types/injectedPropsType';
 import { ROUTES } from '../../routes-config';
 
 import URILandingDialog from '../../components/uri/URILandingDialog';
@@ -10,10 +10,18 @@ import URIVerifyDialog from '../../components/uri/URIVerifyDialog';
 
 import { Logger } from '../../utils/logging';
 
-type Props = InjectedDialogContainerProps;
+type Props = InjectedDialogContainerProps & {
+  onConfirm: Function,
+  address: ?string,
+  amount: ?number,
+};
+type URIDialogState = {
+  verifyTxData?: boolean,
+};
 
 @observer
-export default class URILandingDialogContainer extends Component<Props> {
+export default class URILandingDialogContainer
+  extends Component<Props, URIDialogState> {
 
   state = {
     verifyTxData: false,
@@ -41,16 +49,16 @@ export default class URILandingDialogContainer extends Component<Props> {
 
   render() {
 
-    const {verifyTxData} = this.state;
+    const { verifyTxData } = this.state;
 
     if (verifyTxData) {
       return (
         <URIVerifyDialog
           onSubmit={this.onVerifiedSubmit}
-          onClose={this.props.onClose}
           onCancel={this.cancelVerification}
           address={this.props.address}
           amount={this.props.amount}
+          classicTheme={this.props.classicTheme}
         />
       );
     }
@@ -58,10 +66,10 @@ export default class URILandingDialogContainer extends Component<Props> {
     return (
       <URILandingDialog
         onSubmit={this.onSubmit}
-        onClose={this.props.onClose}
-        onCancel={this.onCancel}
+        onClose={this.onCancel}
         address={this.props.address}
         amount={this.props.amount}
+        classicTheme={this.props.classicTheme}
       />
     );
 

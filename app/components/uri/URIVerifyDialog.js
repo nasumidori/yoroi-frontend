@@ -22,25 +22,24 @@ type Props = {
   onSubmit: Function,
   onCancel: Function,
   error?: ?LocalizableError,
-};
-
-type State = {
-  warningConfirmed: boolean,
+  classicTheme: boolean,
+  address: ?string,
+  amount: ?number,
 };
 
 @observer
-export default class URILandingDialog extends Component<Props, State> {
+export default class URILandingDialog extends Component<Props> {
 
   render() {
-    const { onCancel, onSubmit } = this.props;
+    const { onCancel, onSubmit, classicTheme } = this.props;
 
     return (
       <Dialog
         title="Confirm transaction parameters"
         closeOnOverlayClick={false}
         closeButton={<DialogCloseButton />}
-        classicTheme={true}
-        onClose={this.props.onClose}
+        classicTheme={classicTheme}
+        onClose={onCancel}
         backButton={<DialogBackButton onBack={onCancel} />}
       >
         <div>

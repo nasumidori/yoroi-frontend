@@ -24,7 +24,7 @@ export default class LoadingStore extends Store {
   @observable _loading: boolean = true;
   @observable _uriParams: Object = {};
 
-  _originRoute: string = null;
+  _originRoute: string = '';
   _originRouteIsURI: boolean = false;
 
   @observable loadRustRequest: Request<void => Promise<void>>
