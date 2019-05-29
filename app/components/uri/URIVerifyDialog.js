@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { observer } from 'mobx-react';
 import { Button } from 'react-polymorph/lib/components/Button';
 import { ButtonSkin } from 'react-polymorph/lib/skins/simple/ButtonSkin';
@@ -11,6 +10,7 @@ import DialogCloseButton from '../widgets/DialogCloseButton';
 import DialogBackButton from '../widgets/DialogBackButton';
 import LocalizableError from '../../i18n/LocalizableError';
 
+// TODO: internationalization
 const messages = defineMessages({
   titleLabel: {
     id: 'wallet.send.from.uri.label',
@@ -21,7 +21,6 @@ const messages = defineMessages({
 type Props = {
   onSubmit: Function,
   onCancel: Function,
-  error?: ?LocalizableError,
   classicTheme: boolean,
   address: ?string,
   amount: ?number,

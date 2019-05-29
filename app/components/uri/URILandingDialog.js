@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { observer } from 'mobx-react';
 import { Button } from 'react-polymorph/lib/components/Button';
 import { ButtonSkin } from 'react-polymorph/lib/skins/simple/ButtonSkin';
@@ -21,14 +20,13 @@ const messages = defineMessages({
   },
   uriLandingDialogConfirmLabel: {
     id: 'uri.landing.dialog.confirm.label',
-    defaultMessage: "!!!I understand",
+    defaultMessage: '!!!I understand',
   },
 });
 
 type Props = {
   onSubmit: Function,
-  onClose: Function,
-  error?: ?LocalizableError,
+  onClose?: Function,
   classicTheme: boolean,
 };
 
@@ -36,10 +34,7 @@ type Props = {
 export default class URILandingDialog extends Component<Props> {
 
   static defaultProps = {
-    onSubmit: undefined,
     onClose: undefined,
-    error: undefined,
-    classicTheme: true
   }
 
   static contextTypes = {
@@ -62,15 +57,15 @@ export default class URILandingDialog extends Component<Props> {
         onClose={onClose}
       >
         <div>
-            <p>
-              {this.context.intl.formatMessage(messages.uriLandingDialogWarningText)}
-            </p>
-            <Button
-              label={this.context.intl.formatMessage(messages.uriLandingDialogConfirmLabel)}
-              onMouseUp={this.submit}
-              disabled={false}
-              skin={ButtonSkin}
-            />
+          <p>
+            {this.context.intl.formatMessage(messages.uriLandingDialogWarningText)}
+          </p>
+          <Button
+            label={this.context.intl.formatMessage(messages.uriLandingDialogConfirmLabel)}
+            onMouseUp={this.submit}
+            disabled={false}
+            skin={ButtonSkin}
+          />
         </div>
       </Dialog>
     );

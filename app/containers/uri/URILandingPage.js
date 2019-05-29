@@ -5,7 +5,7 @@ import { ROUTES } from '../../routes-config';
 import environment from '../../environment';
 import type { InjectedProps } from '../../types/injectedPropsType';
 import Wallet from '../../domain/Wallet';
-import URILandingDialogContainer from './URILandingDialogContainer'
+import URILandingDialogContainer from './URILandingDialogContainer';
 
 type Props = InjectedProps;
 
