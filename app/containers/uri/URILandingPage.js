@@ -26,7 +26,7 @@ export default class URILandingPage extends Component<Props> {
     }
     this.props.actions.router.goToRoute.trigger({
       route: ROUTES.WALLETS.SEND,
-      params: params,
+      params,
     });
   }
 
